@@ -1,0 +1,7 @@
+#Internal package file, do not edit.
+#Wed Oct 28 13:16:18 GMT 2020
+0.baseType=DIRECTORY
+0.base=C\:\\Users\\HP\\Documents\\ICM\\ICM_20_21_93093\\lab02\\FragmentExample1\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\0
+0.path=classes.dex
+0.set=DEX
+count=1
