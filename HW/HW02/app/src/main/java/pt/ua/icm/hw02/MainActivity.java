@@ -38,7 +38,7 @@ import java.util.Set;
 public class MainActivity extends AppCompatActivity {
     IpmaWeatherClient client = new IpmaWeatherClient();
     private HashMap<String, City> cities;
-    private HashMap<Integer, WeatherType> weatherDescriptions;
+    public static HashMap<Integer, WeatherType> weatherDescriptions;
     private RecyclerView mrecyclerview;
     private boolean mIsDualPane;
     @Override

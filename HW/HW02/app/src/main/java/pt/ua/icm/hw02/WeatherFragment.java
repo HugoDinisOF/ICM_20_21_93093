@@ -3,6 +3,8 @@ package pt.ua.icm.hw02;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.io.Serializable;
+import java.util.LinkedList;
 import java.util.List;
 
 import pt.ua.icm.hw02.datamodel.Weather;
@@ -66,13 +69,11 @@ public class WeatherFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootview= inflater.inflate(R.layout.fragment_weather, container, false);
-        TextView tmax = (TextView) rootview.findViewById(R.id.txtViewTMax);
-        TextView tmin = (TextView) rootview.findViewById(R.id.txtViewTMin);
-        TextView c = (TextView) rootview.findViewById(R.id.textView);
-        tmax.setText( tmax.getText()+String.valueOf(mParam1.get(0).getTMax()));
-        tmin.setText( tmin.getText()+String.valueOf(mParam1.get(0).getTMin()));
+        TextView c = (TextView)rootview.findViewById(R.id.textView);
         c.setText(mParam2);
-
+        RecyclerView r = (RecyclerView) rootview.findViewById(R.id.weatherRecycler);
+        r.setAdapter(new WeatherListAdapter(this.getContext(),new LinkedList<Weather>(mParam1)));
+        r.setLayoutManager(new LinearLayoutManager(this.getContext()));
         return rootview;
     }
 }

@@ -124,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
                 for (Weather day : forecast) {
                     feedback.append(day.toString());
                     feedback.append("\t");
+                    feedback.append(weatherDescriptions.get(day.getIdWeatherType()).getDescIdWeatherTypePT());
                 }
             }
             @Override

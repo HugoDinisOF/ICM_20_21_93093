@@ -26,7 +26,7 @@ public class WeatherActivity extends AppCompatActivity {
         WeatherFragment fragment = WeatherFragment.newInstance(weatherList,city);
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.fragment_container_weather_solo,fragment).addToBackStack(null).commit();
+        fragmentTransaction.add(R.id.fragment_container_weather_solo,fragment).commit();
         //TODO fragment implementation
     }
 }
