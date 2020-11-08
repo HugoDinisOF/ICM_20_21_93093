@@ -12,10 +12,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
 import pt.ua.icm.hw02.datamodel.Weather;
+import pt.ua.icm.hw02.datamodel.WeatherType;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,10 +30,12 @@ public class WeatherFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_PARAM3 = "param3";
 
     // TODO: Rename and change types of parameters
     private List<Weather> mParam1;
     private String mParam2;
+    private HashMap<Integer, WeatherType> mParam3;
 
     public WeatherFragment() {
         // Required empty public constructor
@@ -46,11 +50,12 @@ public class WeatherFragment extends Fragment {
      * @return A new instance of fragment WeatherFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static WeatherFragment newInstance(List<Weather> param1, String param2) {
+    public static WeatherFragment newInstance(List<Weather> param1, String param2,HashMap<Integer, WeatherType> param3) {
         WeatherFragment fragment = new WeatherFragment();
         Bundle args = new Bundle();
         args.putSerializable(ARG_PARAM1, (Serializable) param1);
         args.putString(ARG_PARAM2, param2);
+        args.putSerializable(ARG_PARAM3, (Serializable) param3);
         fragment.setArguments(args);
         return fragment;
     }
@@ -61,6 +66,7 @@ public class WeatherFragment extends Fragment {
         if (getArguments() != null) {
             mParam1 = (List<Weather>)getArguments().getSerializable(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
+            mParam3 = (HashMap<Integer, WeatherType>) getArguments().getSerializable(ARG_PARAM3);
         }
     }
 
@@ -72,7 +78,7 @@ public class WeatherFragment extends Fragment {
         TextView c = (TextView)rootview.findViewById(R.id.textView);
         c.setText(mParam2);
         RecyclerView r = (RecyclerView) rootview.findViewById(R.id.weatherRecycler);
-        r.setAdapter(new WeatherListAdapter(this.getContext(),new LinkedList<Weather>(mParam1)));
+        r.setAdapter(new WeatherListAdapter(this.getContext(),new LinkedList<Weather>(mParam1),mParam3));
         r.setLayoutManager(new LinearLayoutManager(this.getContext()));
         return rootview;
     }

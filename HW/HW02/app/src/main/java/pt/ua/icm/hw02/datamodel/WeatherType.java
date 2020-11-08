@@ -3,10 +3,11 @@ package pt.ua.icm.hw02.datamodel;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.Date;
 
 
-public class WeatherType {
+public class WeatherType implements Serializable {
 
     @Expose
     @SerializedName( "idWeatherType")

@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
 
@@ -69,7 +70,7 @@ public class ListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        CityListAdapter ct = new CityListAdapter(this.getContext(),new LinkedList<String>(Arrays.asList(mParam1)),mParam2);
+        CityListAdapter ct = new CityListAdapter(this.getContext(),new LinkedList<String>(new HashSet<String>(Arrays.asList(mParam1))),mParam2);
         final View rootView = inflater.inflate(R.layout.fragment_list, container, false);
         RecyclerView rc =rootView.findViewById(R.id.recyclerview);
         rc.setAdapter(ct);

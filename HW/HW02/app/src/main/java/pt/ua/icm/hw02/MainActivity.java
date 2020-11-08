@@ -34,11 +34,12 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.SortedSet;
 
 public class MainActivity extends AppCompatActivity {
     IpmaWeatherClient client = new IpmaWeatherClient();
     private HashMap<String, City> cities;
-    public static HashMap<Integer, WeatherType> weatherDescriptions;
+    private HashMap<Integer, WeatherType> weatherDescriptions;
     private RecyclerView mrecyclerview;
     private boolean mIsDualPane;
     @Override
@@ -51,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
             Log.d("d","deu este");
             if(savedInstanceState.getSerializable("citylist") != null){
                 cities = (HashMap<String, City>)savedInstanceState.getSerializable("citylist");
+                weatherDescriptions = (HashMap<Integer, WeatherType>) savedInstanceState.getSerializable("weatherdesc");
                 //LoadCityList();
 
             }
@@ -61,7 +63,8 @@ public class MainActivity extends AppCompatActivity {
 
         }catch(Exception e){
             Log.d("d","deu este 3");
-            callWeatherForecastForACityList();}
+            callWeatherForecastForACityList();
+            callWeatherDescription();}
         View v = findViewById(R.id.fragment_container_weather);
         mIsDualPane = v != null &&
                 v.getVisibility() == View.VISIBLE;
@@ -86,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void LoadCityList(){
-        Set<String> s=cities.keySet();
+        Set<String> s= new HashSet<String>(cities.keySet());
         ListFragment fragment = ListFragment.newInstance(s,new OnClickCity());
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -120,14 +123,15 @@ public class MainActivity extends AppCompatActivity {
             public void receiveForecastList(List<Weather> forecast) {
                 if (mIsDualPane) {
                     //TODO Fazer a transaction para mudar o fragment
-                    WeatherFragment fragment = WeatherFragment.newInstance(forecast,city);
+                    WeatherFragment fragment = WeatherFragment.newInstance(forecast,city,weatherDescriptions);
                     FragmentManager fragmentManager = getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.add(R.id.fragment_container_weather,fragment).addToBackStack(null).commit();
+                    fragmentTransaction.add(R.id.fragment_container_weather,fragment).commit();
                 }else{
                     Intent i = new Intent(m,WeatherActivity.class);
                     Bundle b = new Bundle();
                     b.putSerializable("weather", (Serializable) forecast);
+                    b.putSerializable("weatherdesc", (Serializable) weatherDescriptions);
                     b.putString("city",city);
                     i.putExtras(b);
                     startActivity(i);
@@ -154,6 +158,7 @@ public class MainActivity extends AppCompatActivity {
             Log.d("d","deu este");
             if(savedInstanceState.getSerializable("citylist") != null){
                 cities = (HashMap<String, City>)savedInstanceState.getSerializable("citylist");
+                weatherDescriptions = (HashMap<Integer, WeatherType>) savedInstanceState.getSerializable("weatherdesc");
                 //LoadCityList();
 
             }
@@ -164,6 +169,20 @@ public class MainActivity extends AppCompatActivity {
 
         }catch(Exception e){
             Log.d("d","deu este 3");
-            callWeatherForecastForACityList();}
+            callWeatherForecastForACityList();
+            callWeatherDescription();}
+    }
+    private void callWeatherDescription() {
+        // call the remote api, passing an (anonymous) listener to get back the results
+        client.retrieveWeatherConditionsDescriptions(new WeatherTypesResultsObserver() {
+            @Override
+            public void receiveWeatherTypesList(HashMap<Integer, WeatherType> descriptorsCollection) {
+                MainActivity.this.weatherDescriptions = descriptorsCollection;
+            }
+            @Override
+            public void onFailure(Throwable cause) {
+            }
+        });
+
     }
 }
